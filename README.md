@@ -206,3 +206,6 @@
       10. Restart the web server
       
         - sudo service apache2 restart
+        
+      * 3rd party resource
+        https://www.digitalocean.com/community/tutorials/how-to-deploy-a-flask-application-on-an-ubuntu-vps
