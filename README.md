@@ -98,17 +98,17 @@
         
         * create a new database and a db users named catalogu
         
-        - create user catalogu with password 'catalogp'; ( <-> drop user or drop role )
-        - alter user catalogu createdb;
-        - create database catalogd with owner catalogu; ( <-> drop database )
-          : revoke all on schema public from public;  
-        - grant all on schema public to catalogu;
-                
-        - \du ( List of roles of each Role name )
-        - \q ( quit psql )
-          : psql catalogu -h 127.0.0.1 -d catalogd
-          : create table test01 ( a int );
-          : \dt ( List of tables )
+          - create user catalogu with password 'catalogp'; ( <-> drop user or drop role )
+          - alter user catalogu createdb;
+          - create database catalogd with owner catalogu; ( <-> drop database )
+            : revoke all on schema public from public;  
+          - grant all on schema public to catalogu;
+
+          - \du ( List of roles of each Role name )
+          - \q ( quit psql )
+            : psql catalogu -h 127.0.0.1 -d catalogd
+            : create table test01 ( a int );
+            : \dt ( List of tables )
           
       8. Install python packages 
       
@@ -147,10 +147,10 @@
           - and update app_id, app_secret to the fb_client_secrets.json
         
         * Update json path in /var/www/html/catalog/application.py
-        app_id = json.loads(open('/var/www/html/catalog/fb_client_secrets.json', 'r').read())[
-        'web']['app_id']
-        app_secret = json.loads(
-        open('/var/www/html/catalog/fb_client_secrets.json', 'r').read())['web']['app_secret']
+          app_id = json.loads(open('/var/www/html/catalog/fb_client_secrets.json', 'r').read())[
+          'web']['app_id']
+          app_secret = json.loads(
+          open('/var/www/html/catalog/fb_client_secrets.json', 'r').read())['web']['app_secret']
 
        
       5. Add a new __init__.py to /var/www/html/catalog
