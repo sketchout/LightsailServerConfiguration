@@ -1,14 +1,15 @@
 # LightsailServerConfiguration
 
-This project is to setup the Lightsail with UbuntuOS.
+This project is to setup the Lightsail Hosting Server with Ubuntu OS. 
+And it will serve the item catalog web service with postgresql.
 
 # Server information
 
   - IP address : 34.225.110.205
   - SSH port : 2200 
-  - complete URL : 
+  - complete URL : ec2-34-225-110-205.compute-1.amazonaws.com
   
-# Summary of software installed & cnd configuration changed
+# Summary of software installed and configuration changed in Ubuntu
   
       1. Update all installed packages
         - sudo apt update
@@ -34,48 +35,93 @@ This project is to setup the Lightsail with UbuntuOS.
         - sudo ufw allow ntp
         - sudo ufw enable
 
-      * Remove firewall
-        - sudo ufw deny 22
-        - sudo delete deny 22
+        * Remove firewall
+          - sudo ufw deny 22
+          - sudo delete deny 22
 
       4. Create a new user account named grader, give grader access
+      
         - sudo adduer grader
         - sudo cat /etc/sudoers
         - sudo ls /etc/sudoers.d
         - sudo cp /etc/sudoers.d/ubuntu /etc/sudoers.d/grader
         - sudo vi /etc/sudoers.d/grader 
           :  grader ALL=(ALL) ALL )
-        - local machine ssh-keygen 
-          : /c/Users/admin/.ssh/linuxCourse
+          
+        * in local machine,  
+          - ssh-keygen 
+          : save key to /c/Users/admin/.ssh/linuxCourse
 
-        - touch  ~grader/.ssh/authorized_keys
+        * in server machine, 
+          - touch  ~grader/.ssh/authorized_keys
+        
         - chmod 700 ~grader/.ssh
         - chmod 644 ~grader/.ssh/authorized_keys
-        - append linuxCourse.pub to ~grader/.ssh/authorized_keys
+        
+        * get public key from local machine, copy to server machine
+          : append linuxCourse.pub to ~grader/.ssh/authorized_keys
 
-      5. Configure the local timezoe to UTC
+      5. Configure the local timezone to UTC
+      
+        - sudo dpkg-reconfigre tzdata 
 
       6. Install and configure Apache to server a Python mod_wsgi application
 
         - sudo apt install apache2
         - sudo apt install libapache2-mod-wsgi
+        
         - sudo vi /etc/apache2/sites-enabled/000-default.conf
           : WSGIScriptAlias / /var/www/html/myapp.wsgi
+          
         - sudo apache2ctl restart
 
-# 
+      7. Install Postgresql
+      
+        - sudo apt install postgresql
+        * check the remote connections 
+          - sudo vi /etc/postgresql/9.5/main/pg_hba.conf
+          
+            # Database administrative login by Unix domain socket
+            local   all             postgres                                peer
+
+            # TYPE  DATABASE        USER            ADDRESS                 METHOD
+
+            # "local" is for Unix domain socket connections only
+            local   all             all                                     peer
+            # IPv4 local connections:
+            host    all             all             127.0.0.1/32            md5
+            # IPv6 local connections:
+            host    all             all             ::1/128                 md5
+
+          - sudo service postgresql restart
+
+        - sudo -u postgres psql ( access psql )
+        
+        * create a new database and a db users named catalogu
+        
+        - create user catalogu with password 'catalogp'; ( <-> drop user or drop role )
+        - alter user catalogu createdb;
+        - create database catalogd with owner catalogu; ( <-> drop database )
+          : revoke all on schema public from public;  
+        - grant all on schema public to catalogu;
+                
+        - \du ( List of roles of each Role name )
+        - \q ( quit psql )
+          : psql catalogu -h 127.0.0.1 -d catalogd
+          : create table test01 ( a int );
+          : \dt ( List of tables )
+          
+      8. Install python packages 
+      
+        - sudo apt install python-sqlalchemy
+        - sudo apt install python-requests
+        - sudo apt install python-oauth2client
+        - sudo apt install python-psycopg2
+        - sudo apt install python-flask
+
+# Setup Item Catalog
+
+      1. Clone the item catalog
+      
   
-    Please follow these steps to properly submit this project:
 
-    Create a new GitHub repository and add a file named README.md.
-    Your README.md file should include all of the following:
-    i. The IP address and SSH port so your server can be accessed by the reviewer.
-    ii. The complete URL to your hosted web application.
-    
-    iii. A summary of software you installed and configuration changes made.
-    
-    iv. A list of any third-party resources you made use of to complete this project.
-
-    Locate the SSH key you created for the grader user.
-    During the submission process, paste the contents 
-    of the grader user's SSH key into the "Notes to Reviewer" field.
