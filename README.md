@@ -81,17 +81,17 @@
         * check the remote connections 
           - sudo vi /etc/postgresql/9.5/main/pg_hba.conf
           
-            # Database administrative login by Unix domain socket
-            local   all             postgres                                peer
+              # Database administrative login by Unix domain socket
+              local   all             postgres                                peer
 
-            # TYPE  DATABASE        USER            ADDRESS                 METHOD
+              # TYPE  DATABASE        USER            ADDRESS                 METHOD
 
-            # "local" is for Unix domain socket connections only
-            local   all             all                                     peer
-            # IPv4 local connections:
-            host    all             all             127.0.0.1/32            md5
-            # IPv6 local connections:
-            host    all             all             ::1/128                 md5
+              # "local" is for Unix domain socket connections only
+              local   all             all                                     peer
+              # IPv4 local connections:
+              host    all             all             127.0.0.1/32            md5
+              # IPv6 local connections:
+              host    all             all             ::1/128                 md5
 
           - sudo service postgresql restart
 
@@ -121,7 +121,72 @@
 
 # Setup Item Catalog
 
-      1. Clone the item catalog
+      1. Clone the Item Catalog repository to ~grader
       
+        - git clone https://github.com/sketchout/fullstack-nanodegree-vm.git
+        - sudo ln -s ~grader/fullstack-nanodegree-vm/vagrant/catalog /var/www/html/catalog
   
+      2. Modify engine in /var/www/html/catalog/application.py
+      
+        : #engine = create_engine('sqlite:///catalog.db')
+        : engine = create_engine('postgresql://catalogu:catalogp@localhost/catalogd')
 
+      3. Update json path in /var/www/html/catalog/application.py
+      
+        : #CLIENT_ID = json.loads(
+        : #    open('g_client_secrets.json', 'r').read())['web']['client_id']
+        : CLIENT_ID = json.loads(
+        :     open('/var/www/html/catalog/g_client_secrets.json', 'r').read())['web']['client_id']
+    
+      4. Generate a new client_secrets.json download from https://console.developers.google.com
+      
+        - touch client_secrets.json
+       
+      5. Add a new __init__.py to /var/www/html/catalog
+      
+        : import applicaton import app
+      
+      6. Create table and add data with below file which should modified with 'create_engine' correctly
+      
+        - sudo vi application_database_setup.py
+        - python application_database_setup.py
+        
+        - sudo vi application_lotsofitems.py
+        - python application_lotsofitems.py
+        
+      7. Create a WSGI for the catalog project in the /var/www/html/catalog.wsgi
+      
+        #!/user/bin/python
+        import sys
+        sys.path.insert(0, "/var/www/html/catalog")
+
+      8. Make a WSGI configuration for the catalog project
+      
+        - sudo vi /etc/apache2/sites-avaliable/catalog.conf
+        
+        <VirtualHost *:80>
+            ServerName 34.225.110.205
+            ServerAdmin sketchout@live.com
+            WSGIScriptAlias / /var/www/html/catalog.wsgi
+            <Directory /var/www/html/catalog/>
+                Order allow,deny
+                Allow from all
+            </Directory>
+            Alias /static /var/www/html/catalog/static
+            <Directory /var/www/html/catalog/static/>
+                Order allow,deny
+                Allow from all
+            </Directory>
+            ErrorLog ${APACHE_LOG_DIR}/error.log
+            LogLevel warn
+            CustomLog ${APACHE_LOG_DIR}/access.log combined
+        </VirtualHost>
+
+        
+      9. Enable catalog site
+      
+        - sudo a2ensite catalog
+      
+      10. Restart the web server
+      
+        - sudo service apache2 restart
