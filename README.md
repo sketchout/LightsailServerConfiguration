@@ -62,8 +62,7 @@
           : append linuxCourse.pub to ~grader/.ssh/authorized_keys
 
       5. Configure the local timezone to UTC
-      
-        - sudo dpkg-reconfigre tzdata 
+        - sudo dpkg-reconfigre tzdata 
 
       6. Install and configure Apache to server a Python mod_wsgi application
 
