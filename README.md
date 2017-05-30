@@ -187,9 +187,10 @@
       
         - sudo a2ensite catalog
       
-        : Disable test site 
-          - sudo vi /etc/apache2/sites-enabled/000-default.conf
-            : # WSGIScriptAlias / /var/www/html/myapp.wsgi
+        * Disable test site 
+        
+          - sudo a2dissite 000-default
+      
       
       10. Restart the web server
       
