@@ -1,7 +1,7 @@
 # LightsailServerConfiguration
 
-  This project is to setup the Lightsail Hosting Server with Ubuntu OS. 
-  And it will serve the item catalog web service with postgresql.
+  - This project is to setup the Lightsail Hosting Server with Ubuntu OS. 
+  - And it will serve the item catalog web service with postgresql.
 
 # Server information
 
