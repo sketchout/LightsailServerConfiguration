@@ -141,6 +141,18 @@
       4. Generate a new client_secrets.json download from https://console.developers.google.com
       
         - touch client_secrets.json
+        
+        * Get facebook "app_id", "app_secret" from https://developers.facebook.com/
+        
+          - copy fb_client_secrets_example.json to fb_client_secrets.json
+          - and update app_id, app_secret to the fb_client_secrets.json
+        
+        * Update json path in /var/www/html/catalog/application.py
+        app_id = json.loads(open('/var/www/html/catalog/fb_client_secrets.json', 'r').read())[
+        'web']['app_id']
+        app_secret = json.loads(
+        open('/var/www/html/catalog/fb_client_secrets.json', 'r').read())['web']['app_secret']
+
        
       5. Add a new __init__.py to /var/www/html/catalog
       
