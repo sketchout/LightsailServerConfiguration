@@ -3,13 +3,15 @@
   - This project is to setup the Lightsail Hosting Server with Ubuntu OS. 
   - And it will serve the item catalog web service with postgresql.
 
-# Server information
+Server information
+------------------
 
   - IP address : 34.225.110.205
   - SSH port : 2200 
   - complete URL : ec2-34-225-110-205.compute-1.amazonaws.com
   
-# Summary of software installed and configuration changed in Ubuntu
+Summary of software installed and configuration changed in Ubuntu
+-----------------------------------------------------------------
   
       1. Update all installed packages
         - sudo apt update
@@ -118,7 +120,8 @@
         - sudo apt install python-psycopg2
         - sudo apt install python-flask
 
-# Setup Item Catalog
+Setup for Item Catalog
+--------------------
 
       1. Clone the Item Catalog repository to ~grader
       
